@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>创建钱包</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" href="resources/lib/weui.min.css">
+<link rel="stylesheet" href="resources/css/jquery-weui.css">
+<link rel="stylesheet" href="demos/css/demos.css">
+
+  </head>
+
+  <body ontouchstart>
+
+    <header class='demos-header'>
+      <h1 class="demos-title">创建钱包</h1>
+    </header>
+
+    <div id="walletGenerate">
+      <div class="weui-cells__title">钱包信息</div>
+      <div class="weui-cells weui-cells_form">
+
+        <div class="weui-cell">
+          <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+          <div class="weui-cell__bd">
+            <input class="weui-input" type="password" pattern="[0-9]*" placeholder="请输入密码" id="password">
+          </div>
+        </div>
+      </div>
+
+      <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="generate">确定</a>
+      </div>
+    </div>
+
+    <div id="walletPrivate" style="display: none">
+      <div class="weui-cells__title">保存你的Keystore或者私钥。不要忘记你的密码。</div>
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入文本" rows="3" id="privateKey"></textarea>
+        </div>
+      </div>
+
+      <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="download">下载 Keystore File (UTC / JSON)</a>
+      </div>
+    </div>
+
+  <script src="resources/lib/jquery-2.1.4.js"></script>
+<script src="resources/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="resources/js/jquery-weui.js"></script>
+
+
+    <script>
+      $("#generate").click(function() {
+          var password = $('#password').val();
+          if(!password){
+              $.toptip('请输入密码');
+              return;
+          };
+
+          $.showLoading();
+          $.post("/api/generateWallet",{password:password},function(resp){
+              console.log(resp);
+              $.hideLoading();
+              if(resp.code == -1){
+                  $.toptip(resp.msg);
+                  return;
+              }
+              $.toptip(resp.msg, 'success');
+              $("#walletGenerate").hide();
+              $("#walletPrivate").show();
+
+              $("#privateKey").val(resp.data.privateKey);
+              $("#download").attr("data-file",resp.data.walletName);
+          });
+      });
+
+      $("#download").click(function(){
+          var dataFile = $(this).attr("data-file");
+          if(!dataFile){
+              $.toptip("还未生成文件");
+          }
+          window.open("/api/download/"+dataFile);
+      });
+    </script>
+  </body>
+</html>

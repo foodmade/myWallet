@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>管理钱包</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+  <link rel="stylesheet" href="resources/lib/weui.min.css">
+  <link rel="stylesheet" href="resources/css/jquery-weui.css">
+  <link rel="stylesheet" href="demos/css/demos.css">
+  <style type="text/css">
+    .header {
+      position: relative;
+      color: #fff;
+      height: 45px;
+      padding: 8px 10px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      box-sizing: border-box;
+      background-color: #09BB07;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .header__label {
+      position: absolute;
+      top: 10px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      z-index: 2;
+      border-radius: 3px;
+      text-align: center;
+      color: #fff;
+      background: #09BB07;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body ontouchstart>
+<div class="weui-tab">
+  <div class="header">
+    <div class="header__label" style="text-align: center;"><span>管理钱包</span></div>
+  </div>
+
+  <div class="weui-cells__title">钱包列表</div>
+  <div id="listWallet">
+    <!--<div class="weui-cells">-->
+      <!--<a class="weui-cell weui-cell_access" href="javascript:;">-->
+        <!--<div class="weui-cell__bd">-->
+          <!--<p>:str1</p>-->
+        <!--</div>-->
+        <!--<div class="weui-cell__ft">-->
+          <!--<p>:str2</p>-->
+          <!--<p>￥<span>:str3</span></p>-->
+        <!--</div>-->
+      <!--</a>-->
+    <!--</div>-->
+  </div>
+
+
+</div>
+<script src="resources/lib/jquery-2.1.4.js"></script>
+<script src="resources/lib/fastclick.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="resources/js/jquery-weui.js"></script>
+<script>
+  $(function () {
+      $.showLoading();
+      $.get("/api/listWallet",function(resp){
+          console.log(resp);
+          $.hideLoading();
+          if(resp.code == -1){
+              $.toptip(resp.msg);
+              return;
+          }
+
+          var list = resp.data;
+          var html = "";
+          for(var i = 0; i<list.length;i++){
+              var o = list[i];
+              console.log(o);
+              var template = '<div class="weui-cells">\n' +
+                  '      <a class="weui-cell weui-cell_access" href="javascript:;" data-id=":str4">\n' +
+                  '        <div class="weui-cell__bd">\n' +
+                  '          <p>:str1</p>\n' +
+                  '        </div>\n' +
+                  '        <div class="weui-cell__ft">\n' +
+                  '          <p>:str2</p>\n' +
+                  '          <p>￥<span>:str3</span></p>\n' +
+                  '        </div>\n' +
+                  '      </a>\n' +
+                  '    </div>';
+
+              html += template.replace(":str1",o.address).replace(":str2",o.balance.toFixed(5)).replace(":str3",o.cnyBalance.toFixed(4)).replace(":str4",o.id);
+          }
+          $("#listWallet").append(html);
+
+      });
+
+      $(document).on("click", ".weui-cell_access", function() {
+          var id = $(this).attr("data-id");
+          console.log(id);
+
+          $.actions({
+              title: "选择操作",
+              actions: [
+                  {
+                      text: "转账",
+                      className: "color-primary",
+                      onClick: function() {
+                          location.href = "transafer.html";
+                      }
+                  },
+                  {
+                      text: "删除",
+                      className: 'color-danger',
+                      onClick: function() {
+                          $.showLoading();
+                          $.get("/api/delWallet/"+id,function (resp) {
+                              $.hideLoading();
+                              console.log(resp);
+                              if(resp.code == -1){
+                                  $.toptip(resp.msg);
+                                  return;
+                              }
+                              $.alert(resp.msg);
+                          });
+                      }
+                  }
+              ]
+          });
+      });
+
+
+
+  });
+
+
+</script>
+</body>
+</html>

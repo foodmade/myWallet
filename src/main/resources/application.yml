@@ -1,0 +1,23 @@
+#app
+server:
+    port: 1234
+
+# spring
+spring:
+  profiles:
+    active: dev
+    proName: myWalletPro
+  devtools:
+    restart:
+      enabled: false
+  datasource:
+    url: jdbc:mysql://106.75.47.23:3306/mywallet?useSSL=false
+    username: root
+    password: chen19960119
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true

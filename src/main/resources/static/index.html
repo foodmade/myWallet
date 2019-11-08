@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>钱包实战项目</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" href="resources/lib/weui.min.css">
+<link rel="stylesheet" href="resources/css/jquery-weui.css">
+<link rel="stylesheet" href="demos/css/demos.css">
+<style type="text/css">
+	.header {
+	    position: relative;
+	    color: #fff;
+	    height: 45px;
+	    padding: 8px 10px;
+	    display: -webkit-box;
+	    display: -webkit-flex;
+	    display: flex;
+	    box-sizing: border-box;
+	    background-color: #09BB07;
+	    text-align: center;
+	    font-size: 18px;
+		}
+
+	.header__label {
+	    position: absolute;
+	    top: 10px;
+	    right: 1px;
+	    bottom: 1px;
+	    left: 1px;
+	    z-index: 2;
+	    border-radius: 3px;
+	    text-align: center;
+	    color: #fff;
+	    background: #09BB07;
+	    font-size: 18px;
+	}
+</style>
+  </head>
+
+  <body ontouchstart>
+	
+    <div class="weui-tab">
+    	<div class="header">
+			<div class="header__label" style="text-align: center;"><span>资产</span></div>
+	    </div>
+
+      <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+
+          <div id="noWallet" style="display:none">
+              <div class="weui-loadmore weui-loadmore_line">
+                  <span class="weui-loadmore__tips">暂无数据</span>
+              </div>
+              <div class="weui-footer">
+                  <p class="weui-footer__links">
+                      <a href="createWallet.html" class="weui-footer__link">创建第一个钱包</a>
+                  </p>
+              </div>
+          </div>
+          <div id="showWallet">
+              <div class="weui-msg">
+                  <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+                  <div class="weui-msg__text-area">
+                    <h2 class="weui-msg__title" id="walletName">wallet</h2>
+                    <p class="weui-msg__desc" id="walletAddress">0x1234556789</p>
+                  </div>
+                </div>
+              <div class="weui-cells">
+                  <a href="transafer.html">
+                  <div class="weui-cell">
+                    <div class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+                      <img src="demos/images/pic_160.png" style="width: 50px;display: block">
+                    </div>
+                    <div class="weui-cell__bd">
+                      <p>ETH</p>
+                    </div>
+                    <div class="weui-cell__bd" style="float:right; text-align:center;">
+                      <p><span id="walletBalance">0</span></p>
+                      <p style="font-size: 13px;color: #888888;">￥<span id="walletCny"></span></p>
+                    </div>
+                  </div>
+                  </a>
+              </div>
+          </div>
+            
+        </div>
+        
+        <div id="tab2" class="weui-tab__bd-item">
+
+            <div class="weui-flex">
+                <div class="weui-flex__item"><div class="placeholder">资产名称</div></div>
+                <div class="weui-flex__item"><div class="placeholder">最新价</div></div>
+                <div class="weui-flex__item"><div class="placeholder">最高价</div></div>
+                <div class="weui-flex__item"><div class="placeholder">最低价</div></div>
+            </div>
+            <div class="weui-flex">
+                <div class="weui-flex__item"><div class="placeholder">ETH</div></div>
+                <div class="weui-flex__item"><div class="placeholder">￥<span id="lastCny">0</span></div></div>
+                <div class="weui-flex__item"><div class="placeholder">￥<span id="highCny">0</span></div></div>
+                <div class="weui-flex__item"><div class="placeholder">￥<span id="lowCny">0</span></div></div>
+            </div>
+              
+        </div>
+        <div id="tab3" class="weui-tab__bd-item">
+          
+          <div class="weui-flex">
+          <div class="weui-flex__item">
+          	<div class="placeholder">
+          
+              <div class="weui-msg">
+              <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+              <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title"> <a href="walletList.html">管理钱包</a></h2>
+              </div>
+			
+    		</div>
+          </div></div>
+          <div class="weui-flex__item">
+          <div class="placeholder">
+
+            	<div class="weui-msg">
+              <div class="weui-msg__icon-area"><i class="weui-icon-success weui-icon_msg"></i></div>
+              <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title"><a href="addressTransactions.html">交易记录</a></h2>
+              </div>
+            	
+          </div>
+          </div>
+        </div>
+        </div>
+
+          <div class="weui-cells">
+          <a class="weui-cell weui-cell_access" href="feedback.html">
+            <div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+              <p>用户反馈</p>
+            </div>
+          </a>
+          <a class="weui-cell weui-cell_access" href="about.html">
+            <div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>
+            <div class="weui-cell__bd">
+                <p>关于我们 </p>
+            </div>
+          </a>
+        </div>
+          
+        </div>
+      </div>
+
+      <div class="weui-tabbar">
+        <a href="#tab1" class="weui-tabbar__item weui-bar__item--on">
+          <div class="weui-tabbar__icon">
+            <img src="demos/images/icon_nav_button.png" alt="">
+          </div>
+          <p class="weui-tabbar__label">资产</p>
+        </a>
+        <a href="#tab2" class="weui-tabbar__item" id="aMarket">
+          <div class="weui-tabbar__icon">
+            <img src="demos/images/icon_nav_msg.png" alt="">
+        </div>
+          <p class="weui-tabbar__label">行情</p>
+        </a>
+        <a href="#tab3" class="weui-tabbar__item">
+          <div class="weui-tabbar__icon">
+            <img src="demos/images/icon_nav_cell.png" alt="">
+          </div>
+          <p class="weui-tabbar__label">我</p>
+        </a>
+      </div>
+    </div>
+
+    <script src="resources/lib/jquery-2.1.4.js"></script>
+<script src="resources/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="resources/js/jquery-weui.js"></script>
+
+    <script>
+
+        $(function(){
+
+            $.post("/api/home",function (resp) {
+                console.log(resp);
+                if(resp.code == -1){
+                    $.toptip(resp.msg);
+                    location.href = "login.html";
+                    return;
+                }
+
+                var walletSize = resp.data.walletSize;
+                //没有钱包，则提示用户进行钱包的创建
+                if(walletSize == 0){
+                    $("#noWallet").show();
+                    $("#showWallet").hide();
+                    return;
+                }
+
+//                $("#walletName").text(resp.data.name);
+                $("#walletAddress").text(resp.data.address);
+                $("#walletBalance").text(resp.data.balance.toFixed(5));
+                $("#walletCny").text(resp.data.cnyBalance.toFixed(4));
+            });
+
+        });
+
+        $("#aMarket").click(function(){
+            $.showLoading();
+            $.post("/api/market",function (resp) {
+                $.hideLoading();
+                console.log(resp);
+                $("#lastCny").text(resp.data.ticker.lastCny.toFixed(2));
+                $("#highCny").text(resp.data.ticker.highCny.toFixed(2));
+                $("#lowCny").text(resp.data.ticker.lowCny.toFixed(2));
+            });
+        });
+
+
+    </script>
+</body>
+</html>

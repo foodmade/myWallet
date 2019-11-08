@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>用户反馈</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+  <link rel="stylesheet" href="resources/lib/weui.min.css">
+  <link rel="stylesheet" href="resources/css/jquery-weui.css">
+  <link rel="stylesheet" href="demos/css/demos.css">
+  <style type="text/css">
+    .header {
+      position: relative;
+      color: #fff;
+      height: 45px;
+      padding: 8px 10px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      box-sizing: border-box;
+      background-color: #09BB07;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .header__label {
+      position: absolute;
+      top: 10px;
+      right: 1px;
+      bottom: 1px;
+      left: 1px;
+      z-index: 2;
+      border-radius: 3px;
+      text-align: center;
+      color: #fff;
+      background: #09BB07;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body ontouchstart>
+<div class="weui-tab">
+  <div class="header">
+    <div class="header__label" style="text-align: center;"><span>用户反馈</span></div>
+  </div>
+
+  <div class="weui-tab__bd">
+    <div class="weui-cells__title">反馈内容</div>
+    <div class="weui-cells weui-cells_form">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入文本" rows="3" id="content"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="weui-btn-area">
+      <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">提交</a>
+    </div>
+  </div>
+
+</div>
+<script src="resources/lib/jquery-2.1.4.js"></script>
+<script src="resources/lib/fastclick.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="resources/js/jquery-weui.js"></script>
+<script>
+    $("#showTooltips").click(function() {
+        var content = $('#content').val();
+
+        if(!content){
+            $.toptip('请输入反馈内容');
+            return;
+        };
+
+        $.post("/api/feedback",{content:content},function(resp){
+            if(resp.code == -1){
+                $.toptip(resp.msg);
+                return;
+            }
+            $.toptip(resp.msg, 'success');
+            $('#content').val("");
+        });
+    });
+</script>
+</body>
+</html>

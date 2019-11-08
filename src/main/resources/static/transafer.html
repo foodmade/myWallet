@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>交易转账</title>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+    <link rel="stylesheet" href="resources/lib/weui.min.css">
+    <link rel="stylesheet" href="resources/css/jquery-weui.css">
+    <link rel="stylesheet" href="demos/css/demos.css">
+    <style type="text/css">
+      .header {
+        position: relative;
+        color: #fff;
+        height: 45px;
+        padding: 8px 10px;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        box-sizing: border-box;
+        background-color: #09BB07;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .header__label {
+        position: absolute;
+        top: 10px;
+        right: 1px;
+        bottom: 1px;
+        left: 1px;
+        z-index: 2;
+        border-radius: 3px;
+        text-align: center;
+        color: #fff;
+        background: #09BB07;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+
+  <body ontouchstart>
+
+  <div class="weui-tab">
+    <div class="header">
+      <div class="header__label" style="text-align: center;"><span>交易转账</span></div>
+    </div>
+
+    <div class="weui-cells__title">交易转账 - <a href="javascript:void(0);" id="switchAccount">切换账户</a> </div>
+
+      <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入接收人地址" id="receiveAddress">
+          </div>
+        </div>
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            <input class="weui-input" placeholder="请输入转账金额" id="amount">
+          </div>
+        </div>
+      </div>
+    <div class="weui-btn-area">
+      <input type="hidden" id="sendAddress">
+      <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips">确定</a>
+    </div>
+
+  </div>
+
+<script src="resources/lib/jquery-2.1.4.js"></script>
+<script src="resources/lib/fastclick.js"></script>
+<script>
+  $(function() {
+    FastClick.attach(document.body);
+  });
+</script>
+<script src="resources/js/jquery-weui.js"></script>
+
+    <script>
+      $(function () {
+          $.showLoading();
+          //获取钱包列表
+          $.get("/api/listWallet",function(resp) {
+              console.log(resp);
+              $.hideLoading();
+              if (resp.code == -1) {
+                  $.toptip(resp.msg);
+                  $.hideLoading();
+                  return;
+              }
+
+              var list = resp.data;
+              var items = [];
+              for (var i = 0; i < list.length; i++) {
+                  items.push(list[i].oldAddress);
+              }
+              $("#switchAccount").select({
+                  title: "选择账户",
+                  items: items,
+                  onChange: function(d) {
+                      //console.log(this, d);
+                      //loadTransactions(d.values);
+                      $("#sendAddress").val(d.values);
+                  }
+              });
+
+              //加载第一个账户的信息
+              $("#sendAddress").val(items[0]);
+          });
+      });
+
+
+      $("#showTooltips").click(function() {
+        var receiveAddress = $('#receiveAddress').val();
+        var amount = $('#amount').val();
+
+        if(!receiveAddress){
+          $.toptip('请输入接收地址');
+          return;
+        };
+        if(!amount){
+          $.toptip('请输入金额');
+          return;
+        };
+        var sendAddress = $("#sendAddress").val();
+        $.post("/api/transafer",{sendAddress:sendAddress,receiveAddress:receiveAddress,amount:amount},function(resp){
+           console.log(resp);
+           if(resp.code == -1){
+               $.toptip(resp.msg);
+                return;
+           }
+           $.toptip(resp.msg, 'success');
+           location.href = "index.html";
+        });
+      });
+    </script>
+  </body>
+</html>
