@@ -65,11 +65,11 @@ public class MyToken extends Contract {
 
     public static final String FUNC_GETBALANCE = "getBalance";
 
-    public static final Event TRANSFER_EVENT = new Event("Transfer", 
+    public static final Event TRANSFER_EVENT = new Event("Transfer",
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Address>(true) {}, new TypeReference<Uint256>() {}));
     ;
 
-    public static final Event RECEIVEAPPROVAL_EVENT = new Event("ReceiveApproval", 
+    public static final Event RECEIVEAPPROVAL_EVENT = new Event("ReceiveApproval",
             Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Uint256>() {}, new TypeReference<Address>() {}, new TypeReference<DynamicBytes>() {}));
     ;
 
@@ -92,85 +92,85 @@ public class MyToken extends Contract {
     }
 
     public RemoteFunctionCall<String> name() {
-        final Function function = new Function(FUNC_NAME, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_NAME,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<Boolean> transferFrom(String _from, String _to, BigInteger _value) {
-        final Function function = new Function(FUNC_TRANSFERFROM, 
+        final Function function = new Function(FUNC_TRANSFERFROM,
                 Arrays.<Type>asList(new Address(160, _from),
-                new Address(160, _to),
-                new Uint256(_value)),
+                        new Address(160, _to),
+                        new Uint256(_value)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<BigInteger> decimals() {
-        final Function function = new Function(FUNC_DECIMALS, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_DECIMALS,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getMasterBalance() {
-        final Function function = new Function(FUNC_GETMASTERBALANCE, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_GETMASTERBALANCE,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> balanceOf(String param0) {
-        final Function function = new Function(FUNC_BALANCEOF, 
+        final Function function = new Function(FUNC_BALANCEOF,
                 Arrays.<Type>asList(new Address(160, param0)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<String> symbol() {
-        final Function function = new Function(FUNC_SYMBOL, 
-                Arrays.<Type>asList(), 
+        final Function function = new Function(FUNC_SYMBOL,
+                Arrays.<Type>asList(),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
 
     public RemoteFunctionCall<TransactionReceipt> transfer(String _to, BigInteger _value) {
         final Function function = new Function(
-                FUNC_TRANSFER, 
+                FUNC_TRANSFER,
                 Arrays.<Type>asList(new Address(160, _to),
-                new Uint256(_value)),
+                        new Uint256(_value)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<Boolean> approveAndCall(String _spender, BigInteger _value, byte[] _extraData) {
-        final Function function = new Function(FUNC_APPROVEANDCALL, 
+        final Function function = new Function(FUNC_APPROVEANDCALL,
                 Arrays.<Type>asList(new Address(160, _spender),
-                new Uint256(_value),
-                new DynamicBytes(_extraData)),
+                        new Uint256(_value),
+                        new DynamicBytes(_extraData)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
     public RemoteFunctionCall<BigInteger> spentAllowance(String param0, String param1) {
-        final Function function = new Function(FUNC_SPENTALLOWANCE, 
+        final Function function = new Function(FUNC_SPENTALLOWANCE,
                 Arrays.<Type>asList(new Address(160, param0),
-                new Address(160, param1)),
+                        new Address(160, param1)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> allowance(String param0, String param1) {
-        final Function function = new Function(FUNC_ALLOWANCE, 
+        final Function function = new Function(FUNC_ALLOWANCE,
                 Arrays.<Type>asList(new Address(160, param0),
-                new Address(160, param1)),
+                        new Address(160, param1)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);
     }
 
     public RemoteFunctionCall<BigInteger> getBalance(String account) {
-        final Function function = new Function(FUNC_GETBALANCE, 
+        final Function function = new Function(FUNC_GETBALANCE,
                 Arrays.<Type>asList(new Address(160, account)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
         return executeRemoteCallSingleValueReturn(function, BigInteger.class);

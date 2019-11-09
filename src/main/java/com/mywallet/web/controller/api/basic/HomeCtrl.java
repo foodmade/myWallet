@@ -22,10 +22,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.web3j.abi.EventEncoder;
+import org.web3j.abi.TypeReference;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Event;
+import org.web3j.abi.datatypes.generated.Uint256;
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.core.methods.response.Web3ClientVersion;
 import org.web3j.protocol.http.HttpService;
@@ -41,6 +48,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -294,6 +302,7 @@ public class HomeCtrl extends BaseController {
         return newJson("");
     }
 
+    private static Boolean bol = false;
     /**
      * 主账户余额：952.000000000000000000
      * 次账户余额：48.000000000000000000
@@ -320,6 +329,27 @@ public class HomeCtrl extends BaseController {
 
         System.out.println("合约部署完毕 状态:" + myToken.isValid() + " 地址：" + myToken.getContractAddress());
 
+        if(!bol){
+            bol = true;
+            //监听event事件
+            new Thread(() -> {
+                Event event = new Event("transfer",
+                        Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}, new TypeReference<Address>() {}, new TypeReference<Uint256>() {}));
+                EthFilter filter = new EthFilter(DefaultBlockParameterName.EARLIEST,
+                        DefaultBlockParameterName.LATEST, address);
+                filter.addSingleTopic(EventEncoder.encode(event));
+
+                System.out.println("开启监听event事件.....");
+
+                web3.transactionFlowable().subscribe(log -> {
+                    System.out.println("监听到事件：\n");
+
+                    System.out.println(JSON.toJSONString(log));
+                });
+            }).start();
+        }
+
+
         CompletableFuture<TransactionReceipt> future = myToken.transfer(account1,BigInteger.valueOf(1200)).sendAsync();
 
         new Thread(() -> {
@@ -332,6 +362,7 @@ public class HomeCtrl extends BaseController {
                 e.printStackTrace();
             }
         }).start();
+
 
         System.out.println("主账户余额：" + toDecimal(2,myToken.getMasterBalance().send()));
         System.out.println("次账户余额：" + toDecimal(2,myToken.getBalance(account1).send()));
